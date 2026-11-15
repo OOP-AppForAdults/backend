@@ -2,6 +2,7 @@
 
 package backend.data;
 
+import backend.domain.CardSortingQuestion;
 import backend.domain.MultipleChoiceQuestion;
 import backend.utils.FileIOUtils;
 
@@ -9,6 +10,7 @@ import java.util.*;
 
 public class QuestionRepository {
     private static final String QUIZ_FILE_PATH = "quiz_data.txt";
+    private static final String CARD_FILE_PATH = "card_data.txt";
 
     public List<MultipleChoiceQuestion> loadQuizQuestions() {
         List<MultipleChoiceQuestion> questions = new ArrayList<>();
@@ -29,5 +31,23 @@ public class QuestionRepository {
             }
         }
         return questions;
+    }
+
+    //추가(박찬웅) | 데이터 불러오기
+    public List<CardSortingQuestion> loadCardQuestions() {
+        List<CardSortingQuestion> cards = new ArrayList<>();
+        List<String> lines = FileIOUtils.readLines(CARD_FILE_PATH);
+
+        for (String line : lines) {
+            String[] parts = line.split("\\|");
+
+            if (parts.length == 2) {
+                String correctAnswer = parts[0].trim();
+                String questionText = parts[1].trim();
+
+                cards.add(new CardSortingQuestion(correctAnswer, questionText));
+            }
+        }
+        return cards;
     }
 }
